@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B-Classy Lifestyle</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Preloader -->
+<div id="preloader">
+    <div class="preloader-content">
+        <img src="WhatsApp Image 2026-01-14 at 22.17.21.jpeg" alt="B-Classy Logo" class="preloader-logo">
+        <h1 class="preloader-name">Burnix Cloth</h1>
+    </div>
+</div>
     <div class="ticker-wrapper">
     <div class="ticker-content">
         <span>FREE SHIPPING WHEN BUY MORE THAN 1 PRODUCT</span>
@@ -18,15 +26,25 @@
 </div>
 
     <nav class="navbar">
-        <div class="logo-container"><a href="index.html" class="logo-link">
+        <div class="logo-container">
+        <a href="index.html" class="logo-link">
             <img src="WhatsApp Image 2026-01-14 at 22.17.21.jpeg" alt="B-Classy Logo" class="logo-img">
             <div class="logo-text">
-                <span class="brand-name">B-Classy</span>
+                <span class="brand-name">Burnix Cloth</span>
                 <span class="tagline">Lifestyle</span>
             </div>
-            
         </a>
-        </div>
+    </div>
+     <!-- ✅ Hidden Checkbox -->
+    <input type="checkbox" id="menu-toggle">
+
+    <!-- ✅ Hamburger -->
+    <label for="menu-toggle" class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
+
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
             <li class="dropdown">
@@ -404,10 +422,41 @@
     <p>7-Day Hassle-Free Exchange</p>
   </div>
 </div>
-</section>
-    <div id="cart-drawer" class="drawer">
-        <div class="drawer-header"><h3>Cart</h3><span class="close" id="close-cart">×</span></div>
-        <div class="drawer-content"><p>Your cart is empty</p></div>
+<footer class="footer-container">
+    <div class="footer-content">
+        <div class="footer-section purpose">
+            <h3>PURPOSE</h3>
+            <p>Our mission is to enhance your style with high-quality, affordable accessories. We constantly improve our designs and quality, ensuring you get the best every day.</p>
+            <p>We treat our customers like royalty, providing the best possible service and delivering your favorite pieces quickly so you can enjoy them sooner.</p>
+            <p><strong>Discover the perfect blend of style, quality, and service with us!</strong></p>
+            <div class="social-icons">
+                <span>f</span> <span>i</span> <span>t</span>
+            </div>
+        </div>
+
+        <div class="footer-section links">
+            <h3>MAIN MENU</h3>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Mens</a></li>
+                <li><a href="#">Womens</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section links">
+            <h3>INFORMATION & SUPPORT</h3>
+            <ul>
+                <li><a href="#">Exchange Policy</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 BC Classy Lifestyle. All Rights Reserved.</p>
+    </div>
+</footer>
     </div>
 
     <script src="script.js"></script>
