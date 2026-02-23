@@ -26,13 +26,15 @@ setInterval(showSlides, 4000);
 // bar-fisht//
 const ticker = document.querySelector('.ticker-content');
 
-ticker.addEventListener('mouseover', () => {
-    ticker.style.animationPlayState = 'paused';
-});
-
-ticker.addEventListener('mouseout', () => {
-    ticker.style.animationPlayState = 'running';
-});
+if (ticker) {
+    ticker.addEventListener('mouseover', () => {
+        ticker.style.animationPlayState = 'paused';
+    });
+    
+    ticker.addEventListener('mouseout', () => {
+        ticker.style.animationPlayState = 'running';
+    });
+}
 
 document.querySelectorAll('.hover-img').forEach(img => {
     // මවුස් එක රූපය මතට ගෙන ආ විට
@@ -73,6 +75,9 @@ let autoSlideInterval;
 // Slide එක මාරු කරන ප්‍රධාන function එක
 function showTestimonial(n) {
     const testiSlides = document.querySelectorAll('.testi-slide');
+    if (testiSlides.length === 0) {
+        return; // Testimonials නැති පිටු වලදී error එකක් ඒම නැවැත්වීම
+    }
     
     // සියලුම slides වලින් active class එක අයින් කරන්න
     testiSlides.forEach(slide => slide.classList.remove('active'));
@@ -92,9 +97,11 @@ function moveSlide(n) {
 
 // Auto මාරු වෙන්න timer එකක් පටන් ගැනීම
 function startAutoSlide() {
-    autoSlideInterval = setInterval(() => {
-        showTestimonial(testiIndex + 1);
-    }, 4000); // තත්පර 4කට වරක් මාරු වේ
+    if (document.querySelectorAll('.testi-slide').length > 0) {
+        autoSlideInterval = setInterval(() => {
+            showTestimonial(testiIndex + 1);
+        }, 4000); // තත්පර 4කට වරක් මාරු වේ
+    }
 }
 
 // Timer එක Reset කිරීම (Buttons එබූ විට)
@@ -105,24 +112,41 @@ function resetAutoSlide() {
 
 // Page එක Load වෙද්දීම Timer එක පටන් ගන්න
 startAutoSlide();
-const scrollElements = document.querySelectorAll(".scroll-fade");
-const observer = new IntersectionObserver((entries) => {
+
+// --- NEW: Navbar scroll effect ---
+window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        if (window.scrollY > 50) { // After scrolling 50px
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }
+});
+
+// --- NEW & IMPROVED: Scroll animations for elements ---
+const animatedElements = document.querySelectorAll(".reveal");
+const observer = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if(entry.isIntersecting) {
       entry.target.classList.add("active");
+      observer.unobserve(entry.target); // Stop observing once animated
     }
   });
 }, { threshold: 0.2 });
 
-scrollElements.forEach(el => observer.observe(el));
+animatedElements.forEach(el => observer.observe(el));
 // Hide preloader after page load
 window.addEventListener('load', () => {
     const preloader = document.getElementById('preloader');
-    preloader.style.transition = 'opacity 0.6s ease';
-    preloader.style.opacity = '0';
-    setTimeout(() => {
-        preloader.style.display = 'none';
-    }, 600);
+    if (preloader) {
+        preloader.style.transition = 'opacity 0.6s ease';
+        preloader.style.opacity = '0';
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 600);
+    }
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -161,17 +185,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // 2. Cleaned up Search and Cart Logic
     const searchBtn = document.getElementById('search-btn');
     const searchOverlay = document.getElementById('search-overlay');
+    const closeSearchBtn = document.querySelector('#search-overlay .close-btn'); // Close button for search
     const cartBtn = document.getElementById('cart-btn');
     const cartDrawer = document.getElementById('cart-drawer');
+    const closeCartBtn = document.querySelector('#cart-drawer .close-btn'); // Close button for cart
 
     // Open Search
     searchBtn?.addEventListener('click', () => {
         searchOverlay?.classList.add('open');
     });
 
+    // Close Search
+    closeSearchBtn?.addEventListener('click', () => {
+        searchOverlay?.classList.remove('open');
+    });
+
     // Open Cart
     cartBtn?.addEventListener('click', () => {
         cartDrawer?.classList.add('open');
+    });
+
+    // Close Cart
+    closeCartBtn?.addEventListener('click', () => {
+        cartDrawer?.classList.remove('open');
     });
 
     // Escape key to close overlays
@@ -186,6 +222,53 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // 3. Handle Product Card Clicks to go to Detail Page
+    // Ensuring click listeners are applied on all pages like Mens, Womens, etc.
+    console.log("Applying product click listeners across all pages.");
+
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+        // Click කළ හැකි ප්‍රදේශය වන්නේ product image එක ඇති කොටසයි. "Add to Cart" button එකද එහි අඩංගු වේ.
+        const clickableArea = card.querySelector('.product-img'); 
+
+        if (clickableArea) {
+            clickableArea.style.cursor = 'pointer'; // Click කළ හැකි බව පෙන්වීමට cursor එක වෙනස් කිරීම
+            clickableArea.addEventListener('click', (e) => {
+                
+                e.preventDefault(); // default browser ක්‍රියාවන් නැවැත්වීම
+
+                // 'card' එක ඇතුළෙන් product details ටික ලබාගැනීම
+                const titleEl = card.querySelector('.title');
+                const priceEl = card.querySelector('.price');
+                const imgFrontEl = card.querySelector('.img-front');
+                const imgBackEl = card.querySelector('.img-back');
+                const colorDots = card.querySelectorAll('.color-options .dot');
+
+                if (!titleEl || !priceEl || !imgFrontEl) {
+                    console.error("Could not find product details in the card.", card);
+                    return;
+                }
+
+                const title = titleEl.textContent.trim();
+                const price = priceEl.textContent.trim();
+                
+                // Back image එක නැති වුණොත් error එකක් එන එක වළක්වන්න check එකක් දැම්මා
+                const backImgSrc = imgBackEl ? imgBackEl.src : '';
+                const imageUrls = [imgFrontEl.src, backImgSrc].filter(Boolean); // Front සහ Back images එකතු කරගැනීම
+                
+                const availableColors = Array.from(colorDots).map(dot => {
+                    const colorClass = Array.from(dot.classList).find(c => c !== 'dot' && c !== 'active');
+                    return colorClass;
+                }).filter(Boolean);
+
+                // query parameters සමඟ URL එක සකස් කරගැනීම (පින්තූර කිහිපයක් යැවීම)
+                const url = `product-detail.html?title=${encodeURIComponent(title)}&price=${encodeURIComponent(price)}&images=${encodeURIComponent(imageUrls.join(','))}&colors=${availableColors.join(',')}`;
+
+                // අලුත් product detail page එකට යොමු කිරීම
+                window.location.href = url;
+            });
+        }
+    });
 });
 
 // Function for Video Muting (as referenced in your HTML)
