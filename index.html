@@ -6,6 +6,7 @@
     <title>B-Classy Lifestyle</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
 <body>
     <!-- Preloader -->
@@ -25,71 +26,59 @@
         </div>
 </div>
 
-    <nav class="navbar">
-        <div class="logo-container">
+    <!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+
+    <div class="logo-container">
         <a href="index.html" class="logo-link">
-            <img src="WhatsApp Image 2026-01-14 at 22.17.21.jpeg" alt="B-Classy Logo" class="logo-img">
+            <img src="WhatsApp Image 2026-01-14 at 22.17.21.jpeg" class="logo-img">
             <div class="logo-text">
                 <span class="brand-name">Burnix Cloth</span>
                 <span class="tagline">Lifestyle</span>
             </div>
         </a>
     </div>
-     <!-- ✅ Hidden Checkbox -->
-    <input type="checkbox" id="menu-toggle">
 
-    <!-- ✅ Hamburger -->
-    <label for="menu-toggle" class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </label>
+    <input type="checkbox" id="menu-toggle" hidden>
 
-        <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li class="dropdown">
-                <a href="#">Mens ▾</a>
-                <ul class="dropdown-content">
-                    <li class="b"><a href="necklaces.html">Necklaces</a></li>
-                    <li class="b"><a href="bracelets.html">Bracelets</a></li>
-                    <li class="b"><a href="rings.html">Rings</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Womens ▾</a>
-                <ul class="dropdown-content">
-                    <li class="b"><a href="necklaces.html">Necklaces</a></li>
-                    <li class="b"><a href="bracelets.html">Bracelets</a></li>
-                    <li class="b"><a href="earrings.html">Earrings</a></li>
-                </ul>
-            </li>
-        </ul>
-        <div class="nav-right">
-          <div class="nav-icons">
-            <span id="search-btn">🔍</span>
-            <span>👤</span>
-            <span id="cart-btn">🛒</span>
-          </div>
+    <div class="side-menu">
+        <div class="menu-header">
+            <span>MENU</span>
         </div>
 
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="mens.html">MENS</a></li>
+            <li><a href="womens.html">WOMENS</a></li>
+            <li><a href="login.html">LOGIN</a></li>
+        </ul>
+    </div>
+
+    <!-- Overlay to close menu when clicking outside -->
+    <label for="menu-toggle" class="menu-overlay"></label>
+
+    <div class="nav-icons">
+    <span id="search-btn">🔍</span>
+    <span>👤</span>
+    <span id="cart-btn">🛒</span>
+    <label for="menu-toggle" class="hamburger">☰</label>
+</div>
+</nav>
+
+
      <div id="search-overlay" class="overlay">
-       <span class="close-btn" id="close-search">×</span>
        <div class="overlay-content">
            <input type="text" placeholder="Search for...">
        </div>
      </div>
 
        <div id="cart-drawer" class="cart-drawer">
-          <div class="cart-header">
-            <span class="close-btn" id="close-cart">×</span>
-          </div>
           <div class="cart-content">
             <p>Your cart is empty</p>
             <button class="shop-btn">CONTINUE SHOPPING</button>
           </div>
          </div>
-    </nav>
-
+    
     <div class="slider">
         <div class="slides">
             <div class="slide active" style="background-image: url('WhatsApp Image 2026-01-14 at 22.18.08 (1).jpeg');">
@@ -109,14 +98,40 @@
             </div>
         </div>
     </div>
-    <div class="container">
         <div class="section-header">
-            <center><h2>BEST SELLERS</h2></center>
-            <a href="#" class="view-all">VIEW ALL ❯</a>
+            <h2>BEST SELLERS</h2>
+           <a href="shop.html" class="view-all">VIEW ALL ❯</a>
         </div>
-
-        <div class="product-grid">
+    
+    <p id="productTitle" style="color:white;text-align:center;margin-top:10px;"></p>
+    <div class="product-grid">
     <div class="product-card">
+    <div class="product-img">
+        <img src="images/your-product-front.jpg" alt="Product Front Image" class="img-front">
+        <img src="images/your-product-back.jpg" alt="Product Back Image" class="img-back">
+        <span class="badge">NEW</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">New Stylish T-Shirt</p>
+        <p class="price">Rs. 2,500.00</p>
+
+        <p class="installment-text">
+            or 3 X
+            <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+
+<div class="product-card">
     <div class="product-img">
         <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
         <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
@@ -129,6 +144,324 @@
 
         <p class="installment-text">
             or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+<div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X <span>Rs 583.33</span> with 
+            <span class="mintpay">mintpay</span> 
+            <span class="koko">KOKO</span>
+        </p>
+
+        <div class="color-options">
+            <span class="dot black active"></span>
+            <span class="dot silver"></span>
+            <span class="dot gold"></span>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Overlay එක -->
+<div id="viewAllOverlay" style="display:none;">
+  <div class="view-all-slider">
+      <div class="product-grid">
+    <div class="product-card">
+    <div class="product-img">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Front" class="img-front">
+        <img src="https://via.placeholder.com/400x500?text=Product+2+Back" class="img-back">
+        <span class="badge">SOLD OUT</span>
+    </div>
+
+    <div class="product-info">
+        <p class="title">Minimalist Black Pendant Necklace</p>
+        <p class="price">Rs. 1,750.00</p>
+
+        <p class="installment-text">
+            or 3 X
+            <span>Rs 583.33</span> with 
             <span class="mintpay">mintpay</span> 
             <span class="koko">KOKO</span>
         </p>
@@ -310,6 +643,8 @@
     </div>
 </div>
  </div>
+  </div>
+</div>
 
     <div class="category-container">
     <div class="category-card">
@@ -375,7 +710,7 @@
     <h2 class="section-title">WHAT OUR CUSTOMERS ARE SAYING</h2>
     
     <div class="slider-container">
-        <button class="prev-btn" onclick="moveSlide(-1)">❮</button>
+       
         
         <div class="slider-box">
             <div class="testi-slide active">
@@ -397,7 +732,8 @@
 
         <button class="next-btn" onclick="moveSlide(1)">❯</button>
     </div><br><br>
-    <div class="features-container">
+</section>
+<div class="features-container">
   <div class="feature-item">
     <div class="icon">🛍️</div>
     <h3>FREE SHIPPING</h3>
@@ -429,9 +765,18 @@
             <p>Our mission is to enhance your style with high-quality, affordable accessories. We constantly improve our designs and quality, ensuring you get the best every day.</p>
             <p>We treat our customers like royalty, providing the best possible service and delivering your favorite pieces quickly so you can enjoy them sooner.</p>
             <p><strong>Discover the perfect blend of style, quality, and service with us!</strong></p>
-            <div class="social-icons">
-                <span>f</span> <span>i</span> <span>t</span>
-            </div>
+           <!-- Social Icons -->
+<div class="footer-socials">
+    <a href="https://www.tiktok.com/@yourprofile" target="_blank" class="social-icon tiktok">
+        <i class="fab fa-tiktok"></i>
+    </a>
+    <a href="https://www.facebook.com/yourprofile" target="_blank" class="social-icon facebook">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+    <a href="https://wa.me/947XXXXXXXX" target="_blank" class="social-icon whatsapp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+</div>
         </div>
 
         <div class="footer-section links">
@@ -457,8 +802,7 @@
         <p>&copy; 2024 BC Classy Lifestyle. All Rights Reserved.</p>
     </div>
 </footer>
-    </div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
