@@ -23,57 +23,6 @@ function showSlides() {
 // සෑම තත්පර 4කට වරක් රූපය ස්වයංක්‍රීයව මාරු වේ (4000ms = 4s)
 setInterval(showSlides, 4000);
 
-
-// --- 2. Search Overlay Toggle ---
-const searchBtn = document.getElementById('search-btn');
-const searchOverlay = document.getElementById('search-overlay');
-const closeSearch = document.getElementById('close-search');
-
-if(searchBtn && searchOverlay) {
-    searchBtn.onclick = function() {
-        searchOverlay.classList.add('open');
-        searchOverlay.style.width = "100%";
-        searchOverlay.style.opacity = "1";
-        searchOverlay.style.visibility = "visible";
-    };
-}
-
-if(closeSearch && searchOverlay) {
-    closeSearch.onclick = function() {
-        searchOverlay.classList.remove('open');
-        searchOverlay.style.width = "0";
-        searchOverlay.style.opacity = "0";
-        searchOverlay.style.visibility = "hidden";
-    };
-}
-
-// --- 3. Side Cart Drawer Toggle (පැත්තෙන් එන කරත්තය) ---
-const cartBtn = document.getElementById('cart-btn');
-const cartDrawer = document.getElementById('cart-drawer');
-const closeCart = document.getElementById('close-cart');
-
-// Cart එක විවෘත කිරීමට
-if (cartBtn && cartDrawer) {
-    cartBtn.onclick = () => {
-        cartDrawer.classList.add('open');
-    };
-}
-
-// Cart එක වැසීමට
-if (closeCart) {
-    closeCart.onclick = () => {
-        cartDrawer.classList.remove('open');
-    };
-}
-
-// --- 4. අමතර පහසුව: Escape Key එක එබූ විට Overlay වැසීමට ---
-document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") {
-        if (searchOverlay) searchOverlay.classList.remove('open');
-        if (cartDrawer) cartDrawer.classList.remove('open');
-    }
-});
-
 // bar-fisht//
 const ticker = document.querySelector('.ticker-content');
 
@@ -113,10 +62,6 @@ document.querySelectorAll('.small-card').forEach(card => {
     });
 });
 
-function toggleMute() {
-    const video = document.getElementById('mensVideo');
-    video.muted = !video.muted;
-}
 const reviews = [
     { text: "Highly recommended", name: "Ruchika subasinghe" },
     { text: "It's nice ❤️", name: "Spiretech Software Solutions" }
@@ -179,3 +124,78 @@ window.addEventListener('load', () => {
         preloader.style.display = 'none';
     }, 600);
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    dropdowns.forEach(dropdown => {
+        const link = dropdown.querySelector('a');
+        
+        link.addEventListener('click', function(e) {
+            // තිරයේ පළල 768px ට අඩු නම් පමණක් (Mobile)
+            if (window.innerWidth <= 768) {
+                e.preventDefault(); 
+                
+                // දැනට විවෘතව ඇති වෙනත් dropdown වසා දමන්න
+                dropdowns.forEach(other => {
+                    if (other !== dropdown) {
+                        other.classList.remove('active');
+                    }
+                });
+
+                // ක්ලික් කළ එක විවෘත කිරීම හෝ වැසීම
+                dropdown.classList.toggle('active');
+            }
+        });
+    });
+
+    // 1. Handle Submenu Toggles (Mens/Womens)
+    const submenuTitles = document.querySelectorAll('.submenu-title');
+    submenuTitles.forEach(title => {
+        title.addEventListener('click', () => {
+            const parent = title.parentElement;
+            parent.classList.toggle('active');
+        });
+    });
+    
+    // 2. Cleaned up Search and Cart Logic
+    const searchBtn = document.getElementById('search-btn');
+    const searchOverlay = document.getElementById('search-overlay');
+    const cartBtn = document.getElementById('cart-btn');
+    const cartDrawer = document.getElementById('cart-drawer');
+
+    // Open Search
+    searchBtn?.addEventListener('click', () => {
+        searchOverlay?.classList.add('open');
+    });
+
+    // Open Cart
+    cartBtn?.addEventListener('click', () => {
+        cartDrawer?.classList.add('open');
+    });
+
+    // Escape key to close overlays
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") {
+            if (searchOverlay?.classList.contains('open')) {
+                searchOverlay.classList.remove('open');
+            }
+            if (cartDrawer?.classList.contains('open')) {
+                cartDrawer.classList.remove('open');
+            }
+        }
+    });
+
+});
+
+// Function for Video Muting (as referenced in your HTML)
+function toggleMute(videoId, btn) {
+    const video = document.getElementById(videoId);
+    if (video.muted) {
+        video.muted = false;
+        btn.innerText = '🔊';
+    } else {
+        video.muted = true;
+        btn.innerText = '🔇';
+    }
+}
