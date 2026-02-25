@@ -340,6 +340,26 @@ document.addEventListener('DOMContentLoaded', function() {
         userBtnEl.style.fontWeight = 'bold';
         userBtnEl.dataset.loggedIn = 'true';
         userBtnEl.title = `Logged in as ${user.name}. Click to logout.`;
+
+        // --- NEW: Add Admin Panel Link if Admin ---
+        if (user.isAdmin) {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks && !document.getElementById('admin-nav-link')) {
+                const li = document.createElement('li');
+                li.id = 'admin-nav-link';
+                li.innerHTML = '<a href="admin.html" style="color: #d63031; font-weight: bold;">ADMIN PANEL</a>';
+                navLinks.appendChild(li);
+            }
+            
+            // Also for mobile nav
+            const mobileNav = document.querySelector('.mobile-nav-links');
+            if (mobileNav && !document.getElementById('mobile-admin-link')) {
+                const li = document.createElement('li');
+                li.id = 'mobile-admin-link';
+                li.innerHTML = '<a href="admin.html" style="color: #d63031;">ADMIN PANEL</a>';
+                mobileNav.appendChild(li);
+            }
+        }
     }
 
     // Logout වූ පසු navigation bar එක update කිරීම
@@ -351,6 +371,13 @@ document.addEventListener('DOMContentLoaded', function() {
         userBtnEl.style.height = 'auto';
         userBtnEl.dataset.loggedIn = 'false';
         userBtnEl.title = 'Login / Register';
+
+        // --- NEW: Remove Admin Links ---
+        const adminLink = document.getElementById('admin-nav-link');
+        if (adminLink) adminLink.remove();
+        
+        const mobileAdminLink = document.getElementById('mobile-admin-link');
+        if (mobileAdminLink) mobileAdminLink.remove();
     }
 
     // Login ක්‍රියාවලිය
