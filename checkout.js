@@ -64,11 +64,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Handle form submission
     checkoutForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = document.getElementById('email').value;
-        const fullName = document.getElementById('fullName').value;
-        const address = document.getElementById('address').value;
-        const city = document.getElementById('city').value;
-        const phone = document.getElementById('phone').value;
+
+        // --- SECURITY: Honeypot Check ---
+        const honey = document.getElementById('website-honey');
+        if (honey && honey.value) {
+            console.log("Bot detected."); return; // Stop execution silently
+        }
+
+        // --- SECURITY: Input Sanitization Function ---
+        const sanitize = (str) => str ? str.replace(/[<>]/g, "").trim() : "";
+
+        const email = sanitize(document.getElementById('email').value);
+        const fullName = sanitize(document.getElementById('fullName').value);
+        const address = sanitize(document.getElementById('address').value);
+        const city = sanitize(document.getElementById('city').value);
+        const phone = sanitize(document.getElementById('phone').value);
 
         const activePaymentMethod = document.querySelector('.payment-option.active')?.dataset.method;
 
@@ -130,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 `------------------%0a` +
                                 `Please confirm my order.`;
 
-            // Admin Phone Number (Replace with your actual number)
+            // Admin Phone Number (මෙතනට ඔයාගේ WhatsApp අංකය දාන්න - ඇණවුම් ලැබෙන්නේ මේකට)
             const adminPhone = '94771234567'; 
             const whatsappUrl = `https://wa.me/${adminPhone}?text=${whatsappMsg}`;
 
