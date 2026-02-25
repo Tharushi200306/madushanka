@@ -111,26 +111,45 @@ document.addEventListener('DOMContentLoaded', () => {
     addToCartBtn?.addEventListener('click', () => {
         const title = document.getElementById('product-detail-title').textContent;
         const price = document.getElementById('product-detail-price').textContent;
-        const quantity = quantityInput.value;
+        const quantity = parseInt(quantityInput.value);
+        const image = mainImage.src; // Get current main image
         
         const selectedColorEl = document.querySelector('#product-detail-colors .dot.active');
-        const colorClass = selectedColorEl ? Array.from(selectedColorEl.classList).find(c => c !== 'dot' && c !== 'active') : 'Not Selected';
+        const colorClass = selectedColorEl ? Array.from(selectedColorEl.classList).find(c => c !== 'dot' && c !== 'active') : 'Default';
 
         const selectedSizeEl = document.querySelector('.size-selector .size-btn.active');
-        const size = selectedSizeEl ? selectedSizeEl.textContent : 'Not Selected';
+        const size = selectedSizeEl ? selectedSizeEl.textContent : 'Default';
+
+        // Create item object
+        const newItem = {
+            title: title,
+            price: price,
+            image: image,
+            quantity: quantity,
+            color: colorClass,
+            size: size
+        };
+
+        // Get existing cart & Add new item
+        let cart = JSON.parse(localStorage.getItem('burnixCart')) || [];
+        cart.push(newItem);
+        localStorage.setItem('burnixCart', JSON.stringify(cart));
+
+        // Dispatch event to update UI (script.js listens for this)
+        window.dispatchEvent(new Event('cartUpdated'));
 
         // Add click animation
         addToCartBtn.classList.add('clicked');
-        // Remove the class after animation ends to allow re-triggering
-        setTimeout(() => {
-            addToCartBtn.classList.remove('clicked');
-        }, 400); // Duration of the animation
+        setTimeout(() => addToCartBtn.classList.remove('clicked'), 400);
 
-        // Confirmation message
-        alert(`"${title}" (Size: ${size}, Color: ${colorClass}, Qty: ${quantity}) has been added to your cart!`);
-
-        // You can also log this to the console for debugging
-        console.log('Added to cart:', { title, price, size, color: colorClass, quantity });
+        // Show Success Overlay instead of Alert
+        const thankYouOverlay = document.getElementById('thankYouOverlay');
+        if(thankYouOverlay) {
+            thankYouOverlay.querySelector('h2').textContent = 'Added to Cart!';
+            thankYouOverlay.querySelector('p').textContent = `${title} has been added.`;
+            thankYouOverlay.classList.add('show');
+            setTimeout(() => thankYouOverlay.classList.remove('show'), 2000);
+        }
     });
 
     // --- Buy Now Button Logic ---
@@ -242,9 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const imageHTML = photoDataUrl ? `<img src="${photoDataUrl}" alt="Comment photo" class="comment-photo">` : '';
 
             commentDiv.innerHTML = `
-                <div class="comment-header"><strong>${name}</strong><span>Just now</span></div>
+                <div class="comment-header"><strong class="c-name"></strong><span>Just now</span></div>
                 <div class="comment-rating">${ratingHTML}</div>
-                <p class="comment-text">${text}</p>
+                <p class="comment-text"></p>
                 ${imageHTML}
                 
                 <!-- Action Buttons (Edit/Delete) -->
@@ -255,13 +274,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <!-- Edit Form (Hidden initially) -->
                 <div class="edit-container">
-                    <textarea class="edit-textarea" rows="3">${text}</textarea>
+                    <textarea class="edit-textarea" rows="3"></textarea>
                     <div class="edit-btn-group">
                         <button class="save-edit-btn">Save</button>
                         <button class="cancel-edit-btn">Cancel</button>
                     </div>
                 </div>
             `;
+            
+            // --- SECURITY: Use textContent to prevent XSS ---
+            commentDiv.querySelector('.c-name').textContent = name;
+            commentDiv.querySelector('.comment-text').textContent = text;
+            commentDiv.querySelector('.edit-textarea').value = text;
             
             // --- Add Event Listeners for Edit & Delete ---
             const deleteBtn = commentDiv.querySelector('.delete-btn');
