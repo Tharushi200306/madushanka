@@ -140,8 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 `------------------%0a` +
                                 `Please confirm my order.`;
 
-            // Admin Phone Number (මෙතනට ඔයාගේ WhatsApp අංකය දාන්න - ඇණවුම් ලැබෙන්නේ මේකට)
-            const adminPhone = '94771234567'; 
+            // <<< වැදගත්: Admin Phone Number >>>
+            // පාරිභෝගික ඇණවුම් WhatsApp හරහා ලැබෙන්නේ මෙම අංකයටයි. '94' සමඟ ඔබේ අංකය මෙතනට යොදන්න.
+            const adminPhone = '94760026539';
             const whatsappUrl = `https://wa.me/${adminPhone}?text=${whatsappMsg}`;
 
             // 5. Show Success Overlay
