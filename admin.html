@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Burnix Cloth</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        /* Admin Specific Styles */
+        .admin-container { max-width: 1200px; margin: 100px auto; padding: 20px; color: white; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px; }
+        .admin-btn { background: #d4af37; color: black; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        .product-table { width: 100%; border-collapse: collapse; background: #111; margin-top: 20px; }
+        .product-table th, .product-table td { padding: 15px; text-align: left; border-bottom: 1px solid #333; }
+        .product-table th { background-color: #222; color: #d4af37; }
+        .product-table img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+        .action-btn { padding: 5px 10px; margin-right: 5px; cursor: pointer; border: none; border-radius: 3px; }
+        .edit-btn { background: #2980b9; color: white; }
+        .delete-btn { background: #c0392b; color: white; }
+        
+        /* Modal Styles */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: #222; padding: 30px; border-radius: 10px; width: 500px; max-width: 90%; position: relative; border: 1px solid #444; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; color: #aaa; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; background: #333; border: 1px solid #555; color: white; border-radius: 5px; }
+        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #aaa; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <a href="index.html" class="logo-link">
+                <div class="logo-text"><span class="brand-name">Admin Panel</span></div>
+            </a>
+        </div>
+        <div class="nav-icons">
+            <a href="index.html" style="color: white; text-decoration: none; font-weight: bold;">Go Home</a>
+            <span id="user-btn">👤</span>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Product Management</h1>
+            <button class="admin-btn" onclick="openProductModal()">+ Add New Product</button>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="adminProductList">
+                    <!-- Products will load here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProductModal()">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 20px; color: #d4af37;">Add Product</h2>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label>Product Title</label>
+                    <input type="text" id="pTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Price (Rs.)</label>
+                    <input type="text" id="pPrice" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="pCategory">
+                        <option value="Men">Men</option>
+                        <option value="Women">Women</option>
+                        <option value="Jewelry">Jewelry</option>
+                        <option value="BestSeller">Best Seller</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="text" id="pImage" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>Or Upload Image</label>
+                    <input type="file" id="pImageFile" accept="image/*">
+                </div>
+                <button type="submit" class="admin-btn" style="width: 100%;">Save Product</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Admin Page Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('burnixLoggedInUser'));
+            if (!user || !user.isAdmin) {
+                alert('Access Denied. Admins only.');
+                window.location.href = 'index.html';
+                return;
+            }
+            renderAdminProducts();
+        });
+
+        const productForm = document.getElementById('productForm');
+        const pImageFile = document.getElementById('pImageFile');
+        let uploadedImageData = "";
+
+        pImageFile.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImageData = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('productId').value;
+            const title = document.getElementById('pTitle').value;
+            const price = document.getElementById('pPrice').value;
+            const category = document.getElementById('pCategory').value;
+            const imageInput = document.getElementById('pImage').value;
+            
+            const image = uploadedImageData || imageInput || 'https://via.placeholder.com/400x500';
+
+            let products = JSON.parse(localStorage.getItem('burnixProducts')) || [];
+
+            if (id) {
+                const index = products.findIndex(p => p.id == id);
+                if (index !== -1) {
+                    products[index] = { ...products[index], title, price, category, image };
+                }
+            } else {
+                const newProduct = {
+                    id: Date.now(),
+                    title,
+                    price,
+                    category,
+                    image,
+                    isNew: true
+                };
+                products.push(newProduct);
+            }
+
+            localStorage.setItem('burnixProducts', JSON.stringify(products));
+            closeProductModal();
+            renderAdminProducts();
+            alert('Product Saved!');
+        });
+
+        function renderAdminProducts() {
+            const tbody = document.getElementById('adminProductList');
+            const products = JSON.parse(localStorage.getItem('burnixProducts')) || [];
+            tbody.innerHTML = '';
+
+            products.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><img src="${p.image}" alt="img"></td>
+                    <td>${p.title}</td>
+                    <td>${p.price}</td>
+                    <td>${p.category}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editProduct(${p.id})">Edit</button>
+                        <button class="action-btn delete-btn" onclick="deleteProduct(${p.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteProduct(id) {
+            if(confirm('Are you sure?')) {
+                let products = JSON.parse(localStorage.getItem('burnixProducts')) || [];
+                products = products.filter(p => p.id != id);
+                localStorage.setItem('burnixProducts', JSON.stringify(products));
+                renderAdminProducts();
+            }
+        }
+
+        function editProduct(id) {
+            const products = JSON.parse(localStorage.getItem('burnixProducts')) || [];
+            const p = products.find(prod => prod.id == id);
+            if(p) {
+                document.getElementById('productId').value = p.id;
+                document.getElementById('pTitle').value = p.title;
+                document.getElementById('pPrice').value = p.price;
+                document.getElementById('pCategory').value = p.category;
+                document.getElementById('pImage').value = p.image;
+                document.getElementById('modalTitle').innerText = "Edit Product";
+                uploadedImageData = "";
+                document.getElementById('productModal').style.display = 'flex';
+            }
+        }
+
+        function openProductModal() {
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('modalTitle').innerText = "Add Product";
+            uploadedImageData = "";
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
