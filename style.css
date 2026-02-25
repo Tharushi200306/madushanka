@@ -1,4 +1,8 @@
 /* --- ORIGINAL STYLES PRESERVED --- */
+html {
+    scroll-behavior: smooth; /* මුළු වෙබ් අඩවියටම Smooth Scrolling */
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
 
 body { 
@@ -6,6 +10,7 @@ body {
     color: white;
     overflow-x: hidden;
     line-height: 1.6;
+    animation: pageFadeIn 0.8s ease-in-out; /* පිටුව Load වන විට Fade In වීම */
 }
 
 /* Navbar & Announcements */
@@ -166,6 +171,7 @@ body {
 
     /* Features */
     .feature-item { flex: 1 1 45%; max-width: 50%; }
+    .features-container { flex-wrap: wrap !important; }
 }
 
 /* ඉතා කුඩා Phone සඳහා */
@@ -229,13 +235,16 @@ body {
 .cart-drawer { position:fixed; top:0; right:0; width:0; height:100%; background:#fff; z-index:2000; transition:0.5s; color:#000; }
 .cart-drawer.open { width:320px; }
 
-.overlay-content {position: relative;top: 25%;width: 80%;margin: auto; text-align: center;
+.overlay-content {position: relative;top: 15%;width: 80%;margin: auto; text-align: center;
+    max-height: 80vh; /* Limit height to 80% of viewport height */
+    overflow-y: auto; /* Enable scroll if content overflows */
 }
 
 .overlay-content input { width: 100%;font-size: 30px;border: none;border-bottom: 2px solid black;outline: none; padding: 10px;
 }
 
 .close-btn { position: absolute; top: 20px; right: 45px; font-size: 40px; cursor: pointer; color: #000;
+
 }
 
 /* Cart එකේ close button එකට වෙනම style එකක් */
@@ -546,10 +555,10 @@ background-color: black;text-transform: uppercase;
 .feature-item p {font-size: 18px;color: #121010; font-weight: 600;
 }
 /* පොදු සැකසුම් */
-.features-container { display: flex; flex-wrap: wrap; /* ඉඩ මදි වුණොත් ඊළඟ පේළියට වැටීමට */ justify-content: center; align-items: flex-start; padding: 40px 10px; background-color: #ffffff; gap: 20px; /* අයිටම් අතර පරතරය */
+.features-container { display: flex; flex-wrap: nowrap; /* Desktop වලදී එක පේළියට */ justify-content: space-between; align-items: flex-start; padding: 40px 20px; background-color: #ffffff; gap: 10px;
 }
 
-.feature-item {  text-align: center; padding: 15px; /* Laptop එකේදී අයිටම් 4ක් එක පෙළට පෙන්වීමට */ flex: 1 1 200px;  max-width: 250px;
+.feature-item {  text-align: center; padding: 10px; flex: 1; /* හැම එකම සමාන ඉඩක් ගන්න */
 }
 
 .feature-item h3 { font-size: 14px; font-weight: bold; margin-top: 10px; letter-spacing: 1px; color: #333;
@@ -723,14 +732,61 @@ background-color: black;text-transform: uppercase;
 .small-category-grid { display: grid; grid-template-columns: repeat(2, 1fr); /* Column 6k gawa ganna */ gap: 10px;  padding: 20px;
 }
 
-.small-card { text-decoration: none; text-align: center; overflow: hidden;
+.small-card { 
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; 
+    overflow: hidden;
+    border-radius: 20px; /* More rounded like modern UI */
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    background: rgba(255, 255, 255, 0.05); /* Glass effect base */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    aspect-ratio: 1 / 1; /* Make them square */
 }
 
-.small-card img { width: 100%; border-radius: 8px; /* Photo eka roud karanna */ display: block;
-    transition: transform 0.4s ease; /* Zoom smooth wenna */
+.small-card img { 
+    width: 100%; 
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
 }
 
-.small-card p { margin-top: 10px;font-size: 11px;color: #333;letter-spacing: 1px;font-weight: 500;
+/* New Overlay Effect */
+.small-card-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Dark tint */
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; transition: all 0.4s ease;
+    backdrop-filter: blur(2px); /* Glass effect */
+}
+
+.small-card:hover .small-card-overlay { opacity: 1; }
+
+.small-card-btn {
+    padding: 8px 20px; border: 1px solid #fff; color: #fff; border-radius: 30px;
+    text-transform: uppercase; font-size: 12px; letter-spacing: 1px;
+    transform: translateY(20px); transition: 0.4s;
+}
+
+.small-card:hover .small-card-btn { transform: translateY(0); background: #fff; color: #000; }
+
+/* Hover Effects for the Card itself */
+.small-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    border-color: rgba(212, 175, 55, 0.5); /* Gold border on hover */
+}
+
+.small-card p { 
+    position: absolute; bottom: 15px; left: 0; width: 100%;
+    font-size: 14px; color: #fff; letter-spacing: 2px; font-weight: 700;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8); pointer-events: none; z-index: 2;
 }
 .category-title {
     font-size: 2rem;
@@ -746,10 +802,9 @@ background-color: black;text-transform: uppercase;
     text-underline-offset: 5px;
     letter-spacing: 1px;
 }
-/* Mouse eka uda yaddi saha Phone wala touch karaddi loku wenna */
-.category-card:hover img, 
-.category-card:active img {
-    transform: scale(1.1);
+/* Hover Zoom for Small Cards */
+.small-card:hover img {
+    transform: scale(1.15) rotate(2deg); /* Subtle rotation for modern feel */
 }
 /*bar -first*/
 .ticker-wrapper {
@@ -832,19 +887,7 @@ background-color: black;text-transform: uppercase;
 
 /* --- Add to Cart Button on Hover --- */
 .add-to-cart-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0; /* Hidden by default */
-    transition: opacity 0.4s ease;
-    z-index: 2; /* Make sure it's above the images */
-    border-radius: 12px; /* Match image border-radius */
+    position: absolute; top: 0; left: 0;  width: 100%;   height: 100%;   background: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */  display: flex; justify-content: center; align-items: center;  opacity: 0; /* Hidden by default */  transition: opacity 0.4s ease;  z-index: 2; /* Make sure it's above the images */  border-radius: 12px; /* Match image border-radius */
 }
 
 .product-card:hover .add-to-cart-overlay {
@@ -852,17 +895,7 @@ background-color: black;text-transform: uppercase;
 }
 
 .add-to-cart-btn {
-    background: #fff;
-    color: #000;
-    border: none;
-    padding: 12px 25px;
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 50px;
-    transform: translateY(20px); /* Start slightly lower */
-    transition: all 0.4s ease;
+    background: #fff;  color: #000;  border: none;  padding: 12px 25px;  font-size: 14px;  font-weight: bold; text-transform: uppercase; cursor: pointer;  border-radius: 50px;  transform: translateY(20px); /* Start slightly lower */  transition: all 0.4s ease;
 }
 
 .product-card:hover .add-to-cart-btn {
@@ -871,13 +904,7 @@ background-color: black;text-transform: uppercase;
 
 /* --- Product Detail Page --- */
 .product-detail-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    padding: 50px 5%;
-    max-width: 1200px;
-    margin: auto;
-    align-items: flex-start;
+    display: flex;  flex-wrap: wrap;   gap: 40px;   padding: 50px 5%;   max-width: 1200px;   margin: auto;  align-items: flex-start;
 }
 .product-detail-image {
     flex: 1;
@@ -971,26 +998,15 @@ background-color: black;text-transform: uppercase;
 }
 
 .detail-img-container img {
-    width: 100%;
-    max-width: 400px; /* Limit image size */
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+    width: 100%; max-width: 400px; /* Limit image size */  border-radius: 15px; box-shadow: 0 10px 30px rgba(255,255,255,0.1);
 }
 
 .detail-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+    display: flex;  justify-content: space-between;  align-items: center;  border-bottom: 1px solid rgba(255,255,255,0.2);  padding-bottom: 15px;  margin-bottom: 15px;
 }
 
 #product-detail-title {
-    font-size: 24px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 24px; font-weight: bold;  text-transform: uppercase;  letter-spacing: 1px;
 }
 
 .detail-price {
@@ -1023,15 +1039,7 @@ background-color: black;text-transform: uppercase;
 }
 
 .size-btn {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #555;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: 0.3s;
+    width: 40px;  height: 40px;  border: 1px solid #555;  display: flex;  align-items: center;  justify-content: center;  cursor: pointer;  border-radius: 5px; transition: 0.3s;
 }
 
 .size-btn:hover, .size-btn.active {
@@ -1043,10 +1051,7 @@ background-color: black;text-transform: uppercase;
 
 /* Shipping Form */
 .shipping-form-container {
-    background: rgba(255,255,255,0.05);
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);  padding: 20px;  border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
 }
 
 .form-group {
@@ -1054,35 +1059,14 @@ background-color: black;text-transform: uppercase;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 13px;
-    color: #aaa;
+    display: block; margin-bottom: 5px; font-size: 13px; color: #aaa;
 }
 
 .form-group input, .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    background: #222;
-    border: 1px solid #444;
-    color: white;
-    border-radius: 5px;
-    font-size: 16px;
+    width: 100%; padding: 10px;  background: #222;  border: 1px solid #444; color: white; border-radius: 5px; font-size: 16px;
 }
 
-.place-order-btn {
-    width: 100%;
-    padding: 15px;
-    background: #d4af37;
-    color: black;
-    font-weight: bold;
-    font-size: 18px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    margin-top: 10px;
-    text-transform: uppercase;
-    transition: 0.3s;
+.place-order-btn {  width: 100%;  padding: 15px; background: #d4af37; color: black; font-weight: bold;  font-size: 18px; border: none; border-radius: 50px; cursor: pointer; margin-top: 10px; text-transform: uppercase;transition: 0.3s;
 }
 
 .place-order-btn:hover {
@@ -2227,7 +2211,23 @@ body {
 /* Cart Badge Fix */
 .nav-icons { position: relative; }
 #cart-btn { position: relative; display: inline-block; }
-.cart-count-badge { position: absolute; top: -8px; right: -8px; background: #d4af37; color: #000; font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 50%; min-width: 18px; text-align: center; }
+.cart-count-badge { 
+    position: absolute; top: -8px; right: -8px; 
+    background: #d4af37; color: #000; 
+    font-size: 11px; font-weight: bold; 
+    width: 18px; height: 18px; /* හරියටම රවුමක් එන්න width සහ height සමාන කළා */
+    border-radius: 50%; 
+    display: flex; justify-content: center; align-items: center; /* අංකය මැදට ගන්න */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Badge Pop Animation */
+@keyframes badgePop {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+.cart-count-badge.pop-anim { animation: badgePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
 /* --- Search Overlay Results --- */
 .search-results-container {
@@ -2298,4 +2298,98 @@ body {
 .search-results-container::-webkit-scrollbar-thumb {
     background: #555;
     border-radius: 3px;
+}
+
+/* --- NEW: Auth Button Styling --- */
+.auth-btn {
+    background-color: #d4af37;
+    color: black;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* Enhance text appearance with shadow and glow */
+.auth-btn {
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.7); /* Gold glow effect */
+    transition: all 0.4s ease;
+}
+
+/* Keyframes for glowing animation */
+@keyframes glowing {
+    0% {
+        box-shadow: 0 0 5px rgba(212, 175, 55, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(212, 175, 55, 0.4);
+    }
+}
+
+/* Apply the glowing animation on hover */
+.auth-btn:hover {
+    animation: glowing 2s infinite;
+    transform: scale(1.08);
+}
+
+/* Adjust the text color for better contrast */
+#login-overlay .form-container p {
+    color: #ddd; /* Lighter color for better visibility */
+}
+
+#login-overlay .form-container h2 {
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.9); /* Stronger text shadow */
+}
+
+/* Reduce font sizes in login overlay */
+#login-overlay .form-container h2 {
+    font-size: 24px; /* Smaller heading */
+}
+
+#login-overlay .form-container p {
+    font-size: 12px; /* Smaller paragraph */
+}
+
+.auth-btn {
+    font-size: 14px; /* Smaller button text */
+    padding: 10px 20px; /* Adjust padding */
+}
+
+/* --- ADMIN EDIT MODE STYLES --- */
+#admin-edit-toggle {
+    position: fixed; bottom: 80px; left: 20px; z-index: 10000;
+    background: #d63031; color: white; padding: 12px 20px;
+    border: none; border-radius: 50px; font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5); cursor: pointer;
+    transition: transform 0.3s; display: flex; align-items: center; gap: 10px;
+}
+#admin-edit-toggle:hover { transform: scale(1.1); }
+#admin-edit-toggle.active { background: #27ae60; }
+
+.edit-mode-active .editable-text {
+    outline: 2px dashed #d4af37;
+    cursor: text;
+}
+.edit-mode-active .editable-img {
+    outline: 2px dashed #e74c3c;
+    cursor: pointer;
+}
+
+/* Responsive adjustments for login overlay */
+@media (max-height: 600px) {
+    .overlay-content {
+        top: 5%; /* Adjust top position for smaller screens */
+    }
 }
